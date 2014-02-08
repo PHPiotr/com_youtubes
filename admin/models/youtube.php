@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_youtubes
@@ -6,7 +7,6 @@
  * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
 
 /**
@@ -16,8 +16,8 @@ defined('_JEXEC') or die;
  * @subpackage  com_youtubes
  * @since       1.6
  */
-class YoutubesModelYoutube extends JModelAdmin
-{
+class YoutubesModelYoutube extends JModelAdmin {
+
 	/**
 	 * @var    string  The prefix to use with controller messages.
 	 * @since  1.6
@@ -35,71 +35,56 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since	2.5
 	 */
-	public function batch($commands, $pks, $contexts)
-	{
+	public function batch($commands, $pks, $contexts) {
 		// Sanitize user ids.
 		$pks = array_unique($pks);
 		JArrayHelper::toInteger($pks);
 
 		// Remove any values of zero.
-		if (array_search(0, $pks, true))
-		{
+		if (array_search(0, $pks, true)) {
 			unset($pks[array_search(0, $pks, true)]);
 		}
 
-		if (empty($pks))
-		{
+		if (empty($pks)) {
 			$this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
 			return false;
 		}
 
 		$done = false;
 
-		if (!empty($commands['category_id']))
-		{
+		if (!empty($commands['category_id'])) {
 			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
 
-			if ($cmd == 'c')
-			{
+			if ($cmd == 'c') {
 				$result = $this->batchCopy($commands['category_id'], $pks, $contexts);
-				if (is_array($result))
-				{
+				if (is_array($result)) {
 					$pks = $result;
-				}
-				else
-				{
+				} else {
 					return false;
 				}
-			}
-			elseif ($cmd == 'm' && !$this->batchMove($commands['category_id'], $pks, $contexts))
-			{
+			} elseif ($cmd == 'm' && !$this->batchMove($commands['category_id'], $pks, $contexts)) {
 				return false;
 			}
 			$done = true;
 		}
 
-		if (strlen($commands['client_id']) > 0)
-		{
-			if (!$this->batchClient($commands['client_id'], $pks, $contexts))
-			{
+		if (strlen($commands['client_id']) > 0) {
+			if (!$this->batchClient($commands['client_id'], $pks, $contexts)) {
 				return false;
 			}
 
 			$done = true;
 		}
 
-		if (!empty($commands['language_id']))
-		{
-			if (!$this->batchLanguage($commands['language_id'], $pks, $contexts))
-			{
+		if (!empty($commands['language_id'])) {
+			if (!$this->batchLanguage($commands['language_id'], $pks, $contexts)) {
 				return false;
 			}
 
 			$done = true;
 		}
 
-		if (!$done)
-		{
+		if (!$done) {
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
 			return false;
 		}
@@ -121,28 +106,22 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since   2.5
 	 */
-	protected function batchClient($value, $pks, $contexts)
-	{
+	protected function batchClient($value, $pks, $contexts) {
 		// Set the variables
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 
-		foreach ($pks as $pk)
-		{
-			if ($user->authorise('core.edit', $contexts[$pk]))
-			{
+		foreach ($pks as $pk) {
+			if ($user->authorise('core.edit', $contexts[$pk])) {
 				$table->reset();
 				$table->load($pk);
 				$table->cid = (int) $value;
 
-				if (!$table->store())
-				{
+				if (!$table->store()) {
 					$this->setError($table->getError());
 					return false;
 				}
-			}
-			else
-			{
+			} else {
 				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 				return false;
 			}
@@ -165,66 +144,53 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since	2.5
 	 */
-	protected function batchCopy($value, $pks, $contexts)
-	{
+	protected function batchCopy($value, $pks, $contexts) {
 		$categoryId = (int) $value;
 
 		$table = $this->getTable();
 		$i = 0;
 
 		// Check that the category exists
-		if ($categoryId)
-		{
+		if ($categoryId) {
 			$categoryTable = JTable::getInstance('Category');
-			if (!$categoryTable->load($categoryId))
-			{
-				if ($error = $categoryTable->getError())
-				{
+			if (!$categoryTable->load($categoryId)) {
+				if ($error = $categoryTable->getError()) {
 					// Fatal error
 					$this->setError($error);
 					return false;
-				}
-				else
-				{
+				} else {
 					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 					return false;
 				}
 			}
 		}
 
-		if (empty($categoryId))
-		{
+		if (empty($categoryId)) {
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
 		// Check that the user has create permission for the component
 		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', 'com_youtubes.category.' . $categoryId))
-		{
+		if (!$user->authorise('core.create', 'com_youtubes.category.' . $categoryId)) {
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
 		// Parent exists so we let's proceed
-		while (!empty($pks))
-		{
+		while (!empty($pks)) {
 			// Pop the first ID off the stack
 			$pk = array_shift($pks);
 
 			$table->reset();
 
 			// Check that the row actually exists
-			if (!$table->load($pk))
-			{
-				if ($error = $table->getError())
-				{
+			if (!$table->load($pk)) {
+				if ($error = $table->getError()) {
 					// Fatal error
 					$this->setError($error);
 					return false;
-				}
-				else
-				{
+				} else {
 					// Not fatal error
 					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
@@ -244,17 +210,14 @@ class YoutubesModelYoutube extends JModelAdmin
 
 			// TODO: Deal with ordering?
 			//$table->ordering	= 1;
-
 			// Check the row.
-			if (!$table->check())
-			{
+			if (!$table->check()) {
 				$this->setError($table->getError());
 				return false;
 			}
 
 			// Store the row.
-			if (!$table->store())
-			{
+			if (!$table->store()) {
 				$this->setError($table->getError());
 				return false;
 			}
@@ -263,7 +226,7 @@ class YoutubesModelYoutube extends JModelAdmin
 			$newId = $table->get('id');
 
 			// Add the new ID to the array
-			$newIds[$i]	= $newId;
+			$newIds[$i] = $newId;
 			$i++;
 		}
 
@@ -282,22 +245,16 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	protected function canDelete($record)
-	{
-		if (!empty($record->id))
-		{
-			if ($record->state != -2)
-			{
+	protected function canDelete($record) {
+		if (!empty($record->id)) {
+			if ($record->state != -2) {
 				return;
 			}
 			$user = JFactory::getUser();
 
-			if (!empty($record->catid))
-			{
+			if (!empty($record->catid)) {
 				return $user->authorise('core.delete', 'com_youtubes.category.' . (int) $record->catid);
-			}
-			else
-			{
+			} else {
 				return parent::canDelete($record);
 			}
 		}
@@ -312,18 +269,15 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	protected function canEditState($record)
-	{
+	protected function canEditState($record) {
 		$user = JFactory::getUser();
 
 		// Check against the category.
-		if (!empty($record->catid))
-		{
+		if (!empty($record->catid)) {
 			return $user->authorise('core.edit.state', 'com_youtubes.category.' . (int) $record->catid);
 		}
 		// Default to component settings if category not known.
-		else
-		{
+		else {
 			return parent::canEditState($record);
 		}
 	}
@@ -339,8 +293,7 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function getTable($type = 'Youtube', $prefix = 'YoutubesTable', $config = array())
-	{
+	public function getTable($type = 'Youtube', $prefix = 'YoutubesTable', $config = array()) {
 		return JTable::getInstance($type, $prefix, $config);
 	}
 
@@ -354,30 +307,24 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function getForm($data = array(), $loadData = true)
-	{
+	public function getForm($data = array(), $loadData = true) {
 		// Get the form.
 		$form = $this->loadForm('com_youtubes.youtube', 'youtube', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form))
-		{
+		if (empty($form)) {
 			return false;
 		}
 
 		// Determine correct permissions to check.
-		if ($this->getState('youtube.id'))
-		{
+		if ($this->getState('youtube.id')) {
 			// Existing record. Can only edit in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.edit');
-		}
-		else
-		{
+		} else {
 			// New record. Can only create in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.create');
 		}
 
 		// Modify the form based on access controls.
-		if (!$this->canEditState((object) $data))
-		{
+		if (!$this->canEditState((object) $data)) {
 			// Disable fields for display.
 			$form->setFieldAttribute('ordering', 'disabled', 'true');
 			$form->setFieldAttribute('publish_up', 'disabled', 'true');
@@ -404,19 +351,16 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	protected function loadFormData()
-	{
+	protected function loadFormData() {
 		// Check the session for previously entered form data.
-		$app  = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$data = $app->getUserState('com_youtubes.edit.youtube.data', array());
 
-		if (empty($data))
-		{
+		if (empty($data)) {
 			$data = $this->getItem();
 
 			// Prime some default values.
-			if ($this->getState('youtube.id') == 0)
-			{
+			if ($this->getState('youtube.id') == 0) {
 				$data->set('catid', $app->input->getInt('catid', $app->getUserState('com_youtubes.youtubes.filter.category_id')));
 			}
 		}
@@ -436,19 +380,15 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function stick(&$pks, $value = 1)
-	{
+	public function stick(&$pks, $value = 1) {
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 		$pks = (array) $pks;
 
 		// Access checks.
-		foreach ($pks as $i => $pk)
-		{
-			if ($table->load($pk))
-			{
-				if (!$this->canEditState($table))
-				{
+		foreach ($pks as $i => $pk) {
+			if ($table->load($pk)) {
+				if (!$this->canEditState($table)) {
 					// Prune items that you can't change.
 					unset($pks[$i]);
 					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
@@ -457,8 +397,7 @@ class YoutubesModelYoutube extends JModelAdmin
 		}
 
 		// Attempt to change the state of the records.
-		if (!$table->stick($pks, $value, $user->get('id')))
-		{
+		if (!$table->stick($pks, $value, $user->get('id'))) {
 			$this->setError($table->getError());
 			return false;
 		}
@@ -475,10 +414,9 @@ class YoutubesModelYoutube extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	protected function getReorderConditions($table)
-	{
+	protected function getReorderConditions($table) {
 		$condition = array();
-		$condition[] = 'catid = '. (int) $table->catid;
+		$condition[] = 'catid = ' . (int) $table->catid;
 		$condition[] = 'state >= 0';
 		return $condition;
 	}
@@ -486,17 +424,14 @@ class YoutubesModelYoutube extends JModelAdmin
 	/**
 	 * @since  3.0
 	 */
-	protected function prepareTable($table)
-	{
+	protected function prepareTable($table) {
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
 
-		if (empty($table->id))
-		{
+		if (empty($table->id)) {
 
 			// Set ordering to the last item if not set
-			if (empty($table->ordering))
-			{
+			if (empty($table->ordering)) {
 				$db = JFactory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__youtubes');
 				$max = $db->loadResult();
@@ -504,7 +439,6 @@ class YoutubesModelYoutube extends JModelAdmin
 				$table->ordering = $max + 1;
 			}
 		}
-
 	}
 
 	/**
@@ -515,22 +449,13 @@ class YoutubesModelYoutube extends JModelAdmin
 	 * @return  boolean  True on success.
 	 * @since   1.6
 	 */
+	public function save($data) {
+		$oTable = $this->getTable('Youtube');
+		$oTable->title = $data['title'];
+		$oTable->link = $data['link'];
+		$oTable->state = $data['state'];
 
-	public function save($data)
-	{
-		$app = JFactory::getApplication();
-
-		// Alter the name for save as copy
-		if ($app->input->get('task') == 'save2copy')
-		{
-			list($title, $link) = $this->generateNewTitle($data['catid'], $data['title'], $data['link']);
-			$data['title']	= $title;
-			$data['link']	= $link;
-			$data['state']	= 0;
-		}
-
-		if (parent::save($data))
-		{
+		if (parent::save($data)) {
 			return true;
 		}
 

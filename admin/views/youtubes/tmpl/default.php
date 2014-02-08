@@ -201,13 +201,7 @@ $sortFields = $this->getSortFields();
 							</td>
 
 							<td>
-								<?php if ($item->link && $this->getIdFromLink($this->escape($item->link)) !== null): ?>
-									<iframe width="140" height="79" src="//www.youtube.com/embed/<?php echo $this->getIdFromLink($this->escape($item->link)); ?>" frameborder="0" allowfullscreen="allowfullscreen"></iframe>							 
-								<?php elseif ($item->link): ?>
-									<?php echo $this->escape($item->link); ?>
-								<?php else: ?>
-		<?php echo JText::_('JUNDEFINED'); ?>
-	<?php endif; ?>
+								<iframe width="140" height="79" src="//www.youtube.com/embed/<?php echo $item->link; ?>" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
 							</td>
 
 							<td class="small nowrap hidden-phone">

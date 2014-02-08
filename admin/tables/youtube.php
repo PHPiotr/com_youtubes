@@ -39,7 +39,11 @@ class YoutubesTableYoutube extends JTable {
 		$this->title = htmlspecialchars_decode($this->title, ENT_QUOTES);
 
 		// Set link
-		$this->link = $this->link;
+		$this->link = $this->_checkLink($this->link);
+		if(!$this->link) {
+			$this->setError(JText::_('COM_YOUTUBES_WRONG_LINK'));
+			return false;
+		}
 
 		// Set ordering
 		if ($this->state < 0) {
@@ -47,10 +51,26 @@ class YoutubesTableYoutube extends JTable {
 			$this->ordering = 0;
 		} elseif (empty($this->ordering)) {
 			// Set ordering to last if ordering was 0
-			$this->ordering = self::getNextOrder($this->_db->quoteName('catid') . '=' . $this->_db->quote($this->catid) . ' AND state>=0');
+			$this->ordering = self::getNextOrder('state>=0');
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check if link is valid.
+	 * 
+	 * @param type $sLink	Link of video from youtube.
+	 * @return mixed		Video ID on success / False if not matched.
+	 */
+	protected function _checkLink($sLink) {
+		$regExp = '/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/';
+		preg_match($regExp, $sLink, $match);
+		if ($match && strlen($match[2]) == 11) {
+			return $match[2];
+		} else {
+			return false;
+		}
 	}
 
 	/**
