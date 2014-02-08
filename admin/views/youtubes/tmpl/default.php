@@ -96,19 +96,19 @@ $sortFields = $this->getSortFields();
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
 						<th width="1%" class="nowrap center">
-							<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'JSTATUS', 'state', $listDirn, $listOrder); ?>
 						</th>
 						<th class="nowrap hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'COM_YOUTUBES_HEADING_TITLE', 'title', $listDirn, $listOrder); ?>
 						</th>
 						<th class="nowrap hidden-phone">
-							<?php echo JHtml::_('grid.sort', 'COM_YOUTUBES_HEADING_LINK', 'link', $listDirn, $listOrder); ?>
+							<?php echo JText::_('COM_YOUTUBES_HEADING_LINK'); ?>
 						</th>
 						<th width="10%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap center hidden-phone">
-<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
 				</thead>
