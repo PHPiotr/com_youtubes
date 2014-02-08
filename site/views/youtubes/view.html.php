@@ -19,10 +19,8 @@ defined('_JEXEC') or die;
 class YoutubesViewYoutubes extends JViewLegacy {
 
 	public function display($tpl = null) {
-
 		$app = JFactory::getApplication();
-		
-		JHtml::stylesheet(JUri::base() . 'media/com_youtubes/css/youtubes.css');
+
 		JHtml::_('jquery.framework');
 		JHtml::script(JUri::base() . "media/com_youtubes/js/jcarousel.min.js");
 
@@ -40,17 +38,24 @@ class YoutubesViewYoutubes extends JViewLegacy {
 		$this->params = &$params;
 		$this->items = $this->get('Items');
 
+		$this->_setTitle();
+
 		parent::display($tpl);
 	}
-			
-	public function getIdFromLink($sLink) {
-		$regExp = '/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/';
-		preg_match($regExp, $sLink, $match);
-		if ($match && strlen($match[2]) == 11) {
-			return $match[2];
-		} else {
-			return null;
+
+	protected function _setTitle() {
+
+		$app = &JFactory::getApplication();
+		$title = $this->params->get('page_title', '');
+
+		if (empty($title)) {
+			$title = $app->getCfg('sitename');
+		} elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+		} elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
+		$this->document->setTitle($title);
 	}
 
 }
