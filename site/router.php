@@ -22,6 +22,10 @@ function YoutubesBuildRoute(&$query)
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
+	if (isset($query['view']))
+	{
+		unset($query['view']);
+	}
 	if (isset($query['id']))
 	{
 		$segments[] = $query['id'];
