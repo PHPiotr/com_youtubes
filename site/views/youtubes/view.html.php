@@ -21,6 +21,7 @@ class YoutubesViewYoutubes extends JViewLegacy {
 	public function display($tpl = null) {
 		$app = JFactory::getApplication();
 
+		JHtml::stylesheet(JUri::base() . 'media/com_youtubes/css/youtubes.css');
 		JHtml::_('jquery.framework');
 		JHtml::script(JUri::base() . "media/com_youtubes/js/jcarousel.min.js");
 
