@@ -16,9 +16,9 @@ if (count($this->items) > 0):
 					<iframe class="<?php echo $this->escape($this->items[0]->link); ?>" width="980" height="460" src="//www.youtube.com/embed/<?php echo $this->escape($this->items[0]->link); ?>?wmode=opaque" frameborder="0" allowfullscreen="allowfullscreen"></iframe>							 				
 				</div>
 				<?php if (count($this->items) > 1): ?>
-					<div class="jcarousel-wrapper" style="width:<?php echo (count($this->items) < 3) ? '446px;' : '604px;' ?>">
+					<div class="jcarousel-wrapper" style="width:<?php echo (count($this->items) === 2) ? '290px;' : ((count($this->items) === 3) ? '446px;' : '604px;'); ?>">
 
-						<div class="jcarousel" style="width:<?php echo (count($this->items) < 3) ? '316px;' : '474px;' ?>">
+						<div class="jcarousel" style="width:<?php echo (count($this->items) === 2) ? '158px;' : ((count($this->items) === 3) ? '316px;' : '474px;') ?>">
 							<ul>
 								<?php foreach ($this->items as $key => $item): ?>
 									<li>
@@ -28,7 +28,7 @@ if (count($this->items) > 0):
 									</li>
 								<?php endforeach; ?>
 							</ul>
-							<div style="clear: both"></div>
+							<div class="clearfix"></div>
 						</div>
 						<a class="jcarousel-control-prev" href="#"><span class="nav arrow-left"></span></a>
 						<a class="jcarousel-control-next" href="#"><span class="nav arrow-right"></span></a>

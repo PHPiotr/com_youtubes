@@ -37,7 +37,7 @@ class YoutubesTableYoutube extends JTable {
 	public function check() {
 		// Set title
 		$this->title = htmlspecialchars_decode($this->title, ENT_QUOTES);
-
+ 
 		// Set link
 		$this->link = $this->_checkLink($this->link);
 		if(!$this->link) {
@@ -64,13 +64,20 @@ class YoutubesTableYoutube extends JTable {
 	 * @return mixed		Video ID on success / False if not matched.
 	 */
 	protected function _checkLink($sLink) {
-		$regExp = '/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/';
-		preg_match($regExp, $sLink, $match);
-		if ($match && strlen($match[2]) == 11) {
-			return $match[2];
-		} else {
-			return false;
+		
+		$sRegExp = '/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/';
+		
+		preg_match($sRegExp, $sLink, $sMatch);
+		if (($sMatch && strlen($sMatch[2]) == 11)) {
+			return $sMatch[2];
 		}
+		
+		preg_match($sRegExp, 'http://www.youtube.com/watch?v=' . $sLink, $sMatch);
+		if (($sMatch && strlen($sMatch[2]) == 11)) {
+			return $sMatch[2];
+		}
+		
+		return false;
 	}
 
 	/**
