@@ -13,7 +13,7 @@ if (count($this->items) > 0):
 		<div class="you">
 			<div class="carousel">
 				<div>
-					<iframe class="<?php echo $this->escape($this->items[0]->link); ?>" width="980" height="460" src="//www.youtube.com/embed/<?php echo $this->escape($this->items[0]->link); ?>?wmode=opaque" frameborder="0" allowfullscreen="allowfullscreen"></iframe>							 				
+					<iframe class="<?php echo $this->escape($this->items[0]->link); ?>" width="980" height="460" src="//www.youtube.com/embed/<?php echo $this->escape($this->items[0]->link); ?>?wmode=opaque" allowfullscreen="allowfullscreen"></iframe>							 				
 				</div>
 				<?php if (count($this->items) > 1): ?>
 					<div class="jcarousel-wrapper" style="width:<?php echo (count($this->items) === 2) ? '290px;' : ((count($this->items) === 3) ? '446px;' : '604px;'); ?>">

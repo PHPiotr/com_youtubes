@@ -201,7 +201,7 @@ $sortFields = $this->getSortFields();
 							</td>
 
 							<td>
-								<iframe width="140" height="79" src="//www.youtube.com/embed/<?php echo $item->link; ?>" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+								<iframe width="140" height="79" src="//www.youtube.com/embed/<?php echo $item->link; ?>" allowfullscreen="allowfullscreen"></iframe>
 							</td>
 
 							<td class="small nowrap hidden-phone">
