@@ -18,47 +18,51 @@ defined('_JEXEC') or die;
  */
 class YoutubesViewYoutubes extends JViewLegacy {
 
-    public function display($tpl = null) {
-        $app = JFactory::getApplication();
-        $this->items = $this->get('Items');
+	public function display($tpl = null) {
+		$app = JFactory::getApplication();
+		$this->items = $this->get('Items');
 
-        JHtml::stylesheet(JUri::base() . 'media/com_youtubes/css/youtubes.css');
-        JHtml::_('jquery.framework');
-        JHtml::script(JUri::base() . "media/com_youtubes/js/jcarousel.min.js");
-        if (count($this->items) > 1) {
-            JHtml::script(JUri::base() . "media/com_youtubes/js/youtubes.js");
-        }
-        $params = $app->getParams();
+		JHtml::stylesheet(JUri::base() . 'media/com_youtubes/css/youtubes.css');
+		JHtml::_('jquery.framework');
+		JHtml::script(JUri::base() . "media/com_youtubes/js/jcarousel.min.js");
+		if (count($this->items) > 1) {
+			JHtml::script(JUri::base() . "media/com_youtubes/js/youtubes.js");
+		}
+		$params = $app->getParams();
+		$this->rwd = (bool) $params->get('rwd', 0);
+		// Check for layout override
+		$active = JFactory::getApplication()->getMenu()->getActive();
 
-        // Check for layout override
-        $active = JFactory::getApplication()->getMenu()->getActive();
+		if (isset($active->query['layout'])) {
+			$this->setLayout($active->query['layout']);
+		}
 
-        if (isset($active->query['layout'])) {
-            $this->setLayout($active->query['layout']);
-        }
+		if ($this->rwd) {
+			$this->setLayout('rwd');
+		}
 
-        // Escape strings for HTML output
-        $this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
-        $this->params = &$params;
+		// Escape strings for HTML output
+		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->params = &$params;
 
-        $this->_setTitle();
+		$this->_setTitle();
 
-        parent::display($tpl);
-    }
+		parent::display($tpl);
+	}
 
-    protected function _setTitle() {
+	protected function _setTitle() {
 
-        $app = JFactory::getApplication();
-        $title = $this->params->get('page_title', '');
+		$app = JFactory::getApplication();
+		$title = $this->params->get('page_title', '');
 
-        if (empty($title)) {
-            $title = $app->getCfg('sitename');
-        } elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-            $title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
-        } elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-            $title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
-        }
-        $this->document->setTitle($title);
-    }
+		if (empty($title)) {
+			$title = $app->getCfg('sitename');
+		} elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+		} elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+		}
+		$this->document->setTitle($title);
+	}
 
 }

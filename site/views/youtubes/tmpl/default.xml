@@ -14,17 +14,18 @@
 
 			<!-- Add fields to define saved youtubes. -->
 
-			<field name="ordering" type="list"
-				default="0"
-				description="COM_YOUTUBES_ORDERING_DESC"
-				label="COM_YOUTUBES_ORDERING_LABEL"
-			>
+			<field name="ordering" type="list" default="0" description="COM_YOUTUBES_ORDERING_DESC" label="COM_YOUTUBES_ORDERING_LABEL">
 				<option value="id DESC">COM_YOUTUBES_NEWEST_FIRST</option>
 				<option value="id">COM_YOUTUBES_OLDEST_FIRST</option>
 				<option value="title">COM_YOUTUBES_TITLE</option>
 				<option value="title DESC">COM_YOUTUBES_TITLE_DESC</option>
 				<option value="ordering">COM_YOUTUBES_ORDERING_ORDERING</option>
 				<option value="ordering DESC">COM_YOUTUBES_ORDERING_ORDERING_DESC</option>
+			</field>
+			
+			<field name="rwd" type="radio" default="0" label="COM_YOUTUBES_RWD_LBL" description="COM_YOUTUBES_RWD_DESC">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
 			</field>
 
 		</fieldset>
