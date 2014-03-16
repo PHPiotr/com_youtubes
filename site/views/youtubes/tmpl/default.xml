@@ -27,6 +27,16 @@
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
 			</field>
+			
+			<field name="color_nav" type="color" default="" label="COM_YOUTUBES_COLOR_NAV_LBL" />
+			<field name="color_nav_hover" type="color" default="" label="COM_YOUTUBES_COLOR_NAV_HOVER_LBL" />
+			
+		</fieldset>
+		
+		<fieldset name="desktop" label="COM_YOUTUBES_DESKTOP_FIELDSET_LABEL">
+	
+			<field name="desktop_iframe_width" type="text" default="700" label="COM_YOUTUBES_DESKTOP_IFRAME_WIDTH_LBL" description="COM_YOUTUBES_DESKTOP_IFRAME_WIDTH_DESC" />
+			<field name="desktop_iframe_height" type="text" default="460" label="COM_YOUTUBES_DESKTOP_IFRAME_HEIGHT_LBL" description="COM_YOUTUBES_DESKTOP_IFRAME_HEIGHT_DESC" />
 
 		</fieldset>
 	</fields>

@@ -21,6 +21,7 @@ class YoutubesViewYoutubes extends JViewLegacy {
 	public function display($tpl = null) {
 		$app = JFactory::getApplication();
 		$this->items = $this->get('Items');
+		$document = JFactory::getDocument();
 
 		JHtml::stylesheet(JUri::base() . 'media/com_youtubes/css/youtubes.css');
 		JHtml::_('jquery.framework');
@@ -30,6 +31,33 @@ class YoutubesViewYoutubes extends JViewLegacy {
 		}
 		$params = $app->getParams();
 		$this->rwd = (bool) $params->get('rwd', 0);
+		$this->color_nav = $params->get('color_nav');
+		if (!empty($this->color_nav)) {
+			$style = <<<STYLE
+				.you .nav.arrow-left {
+					border-right: 65px solid {$this->color_nav};
+				}
+				.you .nav.arrow-right {
+					border-left: 65px solid {$this->color_nav};
+				}
+STYLE;
+			$document->addStyleDeclaration($style);
+		}
+		
+		$this->color_nav_hover = $params->get('color_nav_hover', '#0044CC');
+		if (!empty($this->color_nav_hover)) {
+			$style = <<<STYLE
+				.you .jcarousel-control-next:hover .arrow-right {
+					border-left-color: {$this->color_nav_hover};
+				}
+
+				.you .jcarousel-control-prev:hover .arrow-left {
+					border-right-color: {$this->color_nav_hover};
+				}
+STYLE;
+			$document->addStyleDeclaration($style);
+		}
+		
 		// Check for layout override
 		$active = JFactory::getApplication()->getMenu()->getActive();
 
