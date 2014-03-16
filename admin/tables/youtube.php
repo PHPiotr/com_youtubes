@@ -37,10 +37,10 @@ class YoutubesTableYoutube extends JTable {
 	public function check() {
 		// Set title
 		$this->title = htmlspecialchars_decode($this->title, ENT_QUOTES);
- 
+
 		// Set link
 		$this->link = $this->_checkLink($this->link);
-		if(!$this->link) {
+		if (!$this->link) {
 			$this->setError(JText::_('COM_YOUTUBES_WRONG_LINK'));
 			return false;
 		}
@@ -60,23 +60,24 @@ class YoutubesTableYoutube extends JTable {
 	/**
 	 * Check if link is valid.
 	 * 
-	 * @param type $sLink	Link of video from youtube.
+	 * @param string $link	Link to movie on YT.
 	 * @return mixed		Video ID on success / False if not matched.
 	 */
-	protected function _checkLink($sLink) {
+	protected function _checkLink($link) {
+
+		$reg_exp = '/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/';
+		$match = array();
 		
-		$sRegExp = '/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/';
-		
-		preg_match($sRegExp, $sLink, $sMatch);
-		if (($sMatch && strlen($sMatch[2]) == 11)) {
-			return $sMatch[2];
+		preg_match($reg_exp, $link, $match);
+		if ((!empty($match) && strlen($match[2]) == 11)) {
+			return JFilterOutput::cleanText($match[2]);
 		}
-		
-		preg_match($sRegExp, 'http://www.youtube.com/watch?v=' . $sLink, $sMatch);
-		if (($sMatch && strlen($sMatch[2]) == 11)) {
-			return $sMatch[2];
+
+		preg_match($reg_exp, 'http://www.youtube.com/watch?v=' . $link, $match);
+		if ((!empty($match) && strlen($match[2]) == 11)) {
+			return JFilterOutput::cleanText($match[2]);
 		}
-		
+
 		return false;
 	}
 
@@ -145,67 +146,6 @@ class YoutubesTableYoutube extends JTable {
 			if ($table->checked_out == 0 || $table->checked_out == $userId) {
 				// Change the state
 				$table->state = $state;
-				$table->checked_out = 0;
-				$table->checked_out_time = $this->_db->getNullDate();
-
-				// Check the row
-				$table->check();
-
-				// Store the row
-				if (!$table->store()) {
-					$this->setError($table->getError());
-				}
-			}
-		}
-		return count($this->getErrors()) == 0;
-	}
-
-	/**
-	 * Method to set the sticky state for a row or list of rows in the database
-	 * table.  The method respects checked out rows by other users and will attempt
-	 * to checkin rows that it can after adjustments are made.
-	 *
-	 * @param   mixed	An optional array of primary key values to update.  If not
-	 * 					set the instance property value is used.
-	 * @param   integer The sticky state. eg. [0 = unsticked, 1 = sticked]
-	 * @param   integer The user id of the user performing the operation.
-	 * @return  boolean  True on success.
-	 * @since   1.6
-	 */
-	public function stick($pks = null, $state = 1, $userId = 0) {
-		$k = $this->_tbl_key;
-
-		// Sanitize input.
-		JArrayHelper::toInteger($pks);
-		$userId = (int) $userId;
-		$state = (int) $state;
-
-		// If there are no primary keys set check to see if the instance key is set.
-		if (empty($pks)) {
-			if ($this->$k) {
-				$pks = array($this->$k);
-			}
-			// Nothing to set publishing state on, return false.
-			else {
-				$this->setError(JText::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
-				return false;
-			}
-		}
-
-		// Get an instance of the table
-		$table = JTable::getInstance('Youtube', 'YoutubesTable');
-
-		// For all keys
-		foreach ($pks as $pk) {
-			// Load the youtube
-			if (!$table->load($pk)) {
-				$this->setError($table->getError());
-			}
-
-			// Verify checkout
-			if ($table->checked_out == 0 || $table->checked_out == $userId) {
-				// Change the state
-				$table->sticky = $state;
 				$table->checked_out = 0;
 				$table->checked_out_time = $this->_db->getNullDate();
 
