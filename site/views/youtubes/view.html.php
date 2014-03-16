@@ -48,7 +48,7 @@ class YoutubesViewYoutubes extends JViewLegacy {
 
     protected function _setTitle() {
 
-        $app = &JFactory::getApplication();
+        $app = JFactory::getApplication();
         $title = $this->params->get('page_title', '');
 
         if (empty($title)) {
