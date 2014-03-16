@@ -28,7 +28,7 @@ class YoutubesModelYoutubes extends JModelList {
 	public function __construct($config = array()) {
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'id', 'link', 'title', 'language'
+				'id', 'link', 'title', 'language', 'state'
 			);
 		}
 
@@ -87,7 +87,11 @@ class YoutubesModelYoutubes extends JModelList {
 		// Filter on the language.
 		if ($this->getState('filter.language')) {
 			$language = $this->getState('filter.language');
-			$query->where('y.language = ' . $db->quote($language));
+			if ($language === '*') {
+				$query->where('y.language != ""');
+			} else {
+				$query->where('y.language = ' . $db->q($language));
+			}
 		}
 
 		// Add the list ordering clause.

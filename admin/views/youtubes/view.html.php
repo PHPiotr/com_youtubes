@@ -138,10 +138,11 @@ class YoutubesViewYoutubes extends JViewLegacy {
 		);
 	}
 
-	public function getIdFromLink($sLink) {
-		$regExp = '/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/';
-		preg_match($regExp, $sLink, $match);
-		if ($match && strlen($match[2]) == 11) {
+	public function getIdFromLink($link) {
+		$regexp = '/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/';
+		$match = array();
+		preg_match($regexp, $link, $match);
+		if (!empty($match) && strlen($match[2]) == 11) {
 			return $match[2];
 		} else {
 			return null;
