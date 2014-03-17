@@ -13,7 +13,7 @@ if (count($this->items) > 0):
 		<div class="you">
 			<div class="carousel">
 				<div class="visible-desktop">
-					<iframe class="<?php echo $this->escape($this->items[0]->link); ?>" width="700" height="394" src="//www.youtube.com/embed/<?php print_r($this->escape($this->items[0]->link)) ?>?wmode=opaque" frameborder="0" allowfullscreen="allowfullscreen"></iframe>							 				
+					<iframe class="<?php echo $this->escape($this->items[0]->link); ?>" width="<?php echo $this->desktop_iframe_width; ?>" height="<?php echo $this->desktop_iframe_height; ?>" src="//www.youtube.com/embed/<?php print_r($this->escape($this->items[0]->link)) ?>?wmode=opaque" frameborder="0" allowfullscreen="allowfullscreen"></iframe>							 				
 				</div>
 				<div class="visible-tablet">
 					<iframe class="<?php echo $this->escape($this->items[0]->link); ?>" width="539" height="303" src="//www.youtube.com/embed/<?php print_r($this->escape($this->items[0]->link)) ?>?wmode=opaque" frameborder="0" allowfullscreen="allowfullscreen"></iframe>							 				

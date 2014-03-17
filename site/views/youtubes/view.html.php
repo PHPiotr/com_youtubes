@@ -58,6 +58,9 @@ STYLE;
 			$document->addStyleDeclaration($style);
 		}
 		
+		$this->desktop_iframe_width = $params->get('desktop_iframe_width', 700);
+		$this->desktop_iframe_height = $params->get('desktop_iframe_height', 394);
+		
 		// Check for layout override
 		$active = JFactory::getApplication()->getMenu()->getActive();
 

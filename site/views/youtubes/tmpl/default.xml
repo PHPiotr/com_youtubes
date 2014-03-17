@@ -35,8 +35,8 @@
 		
 		<fieldset name="desktop" label="COM_YOUTUBES_DESKTOP_FIELDSET_LABEL">
 	
-			<field name="desktop_iframe_width" type="text" default="700" label="COM_YOUTUBES_DESKTOP_IFRAME_WIDTH_LBL" description="COM_YOUTUBES_DESKTOP_IFRAME_WIDTH_DESC" />
-			<field name="desktop_iframe_height" type="text" default="460" label="COM_YOUTUBES_DESKTOP_IFRAME_HEIGHT_LBL" description="COM_YOUTUBES_DESKTOP_IFRAME_HEIGHT_DESC" />
+			<field name="desktop_iframe_width" type="text" default="700" label="COM_YOUTUBES_DESKTOP_IFRAME_WIDTH_LBL" />
+			<field name="desktop_iframe_height" type="text" default="394" label="COM_YOUTUBES_DESKTOP_IFRAME_HEIGHT_LBL" />
 
 		</fieldset>
 	</fields>
