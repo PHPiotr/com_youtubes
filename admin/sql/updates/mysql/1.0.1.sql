@@ -1,0 +1,1 @@
+ALTER TABLE `#__youtubes` ADD `hours` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `title`, ADD `minutes` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `hours`, ADD `seconds` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `minutes`;

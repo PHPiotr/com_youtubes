@@ -35,15 +35,32 @@ class YoutubesTableYoutube extends JTable {
 	 * @since   1.5
 	 */
 	public function check() {
-		// Set title
-		$this->title = htmlspecialchars_decode($this->title, ENT_QUOTES);
-
 		// Set link
 		$this->link = $this->_checkLink($this->link);
 		if (!$this->link) {
 			$this->setError(JText::_('COM_YOUTUBES_WRONG_LINK'));
 			return false;
 		}
+           
+                $youtubeUrl = "http://gdata.youtube.com/feeds/api/videos/" . $this->link;
+                $youtubeXml = simplexml_load_file($youtubeUrl);
+                $youtubeDuration = (int) $youtubeXml->children('media', true)->group[0]->children('yt', true)->duration[0]->attributes('', true)->seconds;
+                $this->hours = '';
+                $this->minutes = (int) ($youtubeDuration / 60);
+                if ($this->minutes > 59) {
+                        $this->hours = (int) ($this->minutes / 60) . ':';
+                        $this->minutes = $this->minutes % 60;
+                }
+                $ytSec = $youtubeDuration % 60;
+                $this->seconds = $ytSec < 9 ? "0" . $ytSec : $ytSec;
+                $this->title = trim($this->title);
+
+                if (empty($this->title)) {
+                    $this->title = (string) $youtubeXml->title;
+                }
+
+                // Set title
+		$this->title = htmlspecialchars_decode($this->title, ENT_QUOTES);
 
 		// Set ordering
 		if ($this->state < 0) {

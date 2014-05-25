@@ -9,7 +9,11 @@
 
 		<field name="title" type="text" class="inputbox"
 			   size="40" label="COM_YOUTUBES_FIELD_TITLE_LABEL"
-			   description="COM_YOUTUBES_FIELD_TITLE_DESC" required="true" />
+			   description="COM_YOUTUBES_FIELD_TITLE_DESC" />
+                
+		<field name="hours" type="hidden" />
+		<field name="minutes" type="hidden" />
+		<field name="seconds" type="hidden" />
 			
 		<field name="link" type="text" class="inputbox"
 			   size="40" label="COM_YOUTUBES_FIELD_LINK_LABEL"

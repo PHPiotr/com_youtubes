@@ -51,7 +51,7 @@ class YoutubesModelYoutubes extends JModelList {
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('link, title')->from('#__youtubes');
+		$query->select('link, title, hours, minutes, seconds')->from('#__youtubes');
 
 		// Filter by a single or group of categories
 		// Filter by language
